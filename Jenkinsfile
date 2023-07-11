@@ -33,7 +33,7 @@ pipeline {
     stage('Docker Image Build') {
       steps {
         dir("${env.WORKSPACE}") {
-          sh 'docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER)TAG} .'
+          sh 'docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .'
         }
       }
     }
