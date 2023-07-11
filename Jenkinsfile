@@ -38,6 +38,7 @@ pipeline {
       }
     }
     stage('Push Docker Image') {
+      steps {
         script {
           sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
 
@@ -46,7 +47,7 @@ pipeline {
           }
         }
       }
-    
+    }
 
 
     
