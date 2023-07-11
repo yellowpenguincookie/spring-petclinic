@@ -11,5 +11,17 @@ pipeline {
         git url: 'https://github.com/yellowpenguincookie/spring-petclinic.git', branch: 'efficient-webjars', credentialsId: 'gitCredentials'
       }
     }
+    stage('mvn build') {
+      steps {
+        sh 'mvn -Dmaven.test.failure.ignore=true install'
+      }
+      post {
+        success {
+          junit '**/target/surefire-reports/TEST-*.xml'
+        }
+      }
+    }
+
+    
   }
 }
