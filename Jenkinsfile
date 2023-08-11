@@ -5,7 +5,7 @@ pipeline {
     jdk 'JDK11'
   }
   environment {
-    AWS_CREDENTIALS_NAME = "AWS Credentials"
+    AWS_CREDENTIALS_NAME = "AWSCredentials"
     REGION = "ap-northeast-2"
     DOCKER_IMAGE_NAME = "project04-spring-petclinic"
     DOCKER_TAG = "1.0"
