@@ -7,7 +7,7 @@ pipeline {
   environment {
     AWS_CREDENTIALS_NAME = "AWSCredentials"
     REGION = "ap-northeast-2"
-    DOCKER_IMAGE_NAME = "aws04-spring-petclinic"
+    DOCKER_IMAGE_NAME = "project04-spring-petclinic"
     DOCKER_TAG = "1.0"
     ECR_REPOSITORY = "257307634175.dkr.ecr.ap-northeast-2.amazonaws.com"
     ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
@@ -52,7 +52,7 @@ pipeline {
       steps {
         dir("${env.WORKSPACE}") {
           sh 'zip -r deploy-1.0.zip ./scripts appspec.yml'
-          sh 'aws s3 cp --region ap-northeast-2 --acl private ./deploy-1.0.zip s3://aws04-codedeploy'
+          sh 'aws s3 cp --region ap-northeast-2 --acl private ./deploy-1.0.zip s3://project04-codedeploy'
           sh 'rm -rf ./deploy-1.0.zip'
         }
       }
