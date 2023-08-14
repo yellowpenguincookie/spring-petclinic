@@ -20,7 +20,6 @@ pipeline {
         git url: 'https://github.com/yellowpenguincookie/spring-petclinic.git', branch: 'efficient-webjars', credentialsId: 'gitCredentials'
       }
     }
-    
     stage('mvn build') {
       steps {
         sh 'mvn -Dmaven.test.failure.ignore=true install'
@@ -31,7 +30,13 @@ pipeline {
         }
       }
     }
-
+    stage('Docker Image Build') {
+      steps {
+        dir("${env.WORKSPACE}") {
+          sh 'docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .'
+        }
+      }
+    }
     
   }
 }
