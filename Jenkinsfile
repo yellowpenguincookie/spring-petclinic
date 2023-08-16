@@ -62,7 +62,7 @@ pipeline {
     stage('Deploy'){
       steps {
         script {
-          sh "ssh -p 1039 root@10.4.3.83 -T sh < /var/lib/jenkins/deploy.sh"
+          sh "ssh -p 22 root@10.4.3.83 -T sh < /var/lib/jenkins/deploy.sh"
         }
       }
 
