@@ -59,11 +59,6 @@ pipeline {
     }
 
     stage('CodeDeploy') {
-      when {
-          expression {
-              return env.dockerizingResult ==~ /(?i)(Y|YES|T|TRUE|ON|RUN)/
-          }
-      }
       steps {
           script {
               try {
