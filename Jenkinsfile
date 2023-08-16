@@ -59,7 +59,6 @@ pipeline {
     }
     
     stage('CodeDeploy'){
-      #사전 준비
       sh("""
         git config --global user.name "yellowpenguincookie"
         git config --global user.email "yurijjjung@gmail.com"
