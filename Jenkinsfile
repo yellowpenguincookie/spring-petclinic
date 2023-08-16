@@ -59,16 +59,31 @@ pipeline {
     }
 
 
-     stage('Deploy') {
-        steps {
-              // sshagent plugin required when using jenkins credentials
-             sshagent(credentials : ['credential id']) {
-                   sh 'ssh -v id@host'
-                   sh 'ssh id@host mkdir -p /home/ubuntu/deploy/ubuntu-work'
-                   sh 'scp -r ./public id@host:/home/ubuntu/deploy/ubuntu-work'
-            }
-         }
+    stage('Deploy'){
+      steps {
+        script{
+          try {
+             sh"""
+             aws ecs update-service --region ap-northeast-2 --cluster jenkins-test-cluster --service nodejs-jenkins-service --force-new-deployment
+             """
+             } 
+          catch (error) {
+            print(error)
+            echo 'Remove Deploy Files'
+            sh "rm -rf /var/lib/jenkins/workspace/nodejs-pipeline/*"
+            currentBuild.result = 'FAILURE'
+          }
+        }
       }
+                post {
+                    success {
+                        echo "The deploy stage successfully."
+                    }
+                    failure {
+                        echo "The deploy stage failed."
+                    }
+                }
+    }
 
     
   
