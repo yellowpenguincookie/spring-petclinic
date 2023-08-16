@@ -58,17 +58,17 @@ pipeline {
       }
     }
     
-    # update 된 도커 이미지 태그를 깃헙에 push
+    #update 된 도커 이미지 태그를 깃헙에 push
     stage('CodeDeploy'){
-      # 사전 준비
+      #사전 준비
       sh("""
         git config --global user.name "yellowpenguincookie"
         git config --global user.email "yurijjjung@gmail.com"
         git checkout -B master
       """)
 
-      # 전역변수에 값 넣기 
-      # previousTAG 변수에 이전 빌드 번호를 넣음 
+      #전역변수에 값 넣기 
+      #previousTAG 변수에 이전 빌드 번호를 넣음 
       script{
         previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
       }
