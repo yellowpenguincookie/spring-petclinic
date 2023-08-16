@@ -61,9 +61,9 @@ pipeline {
     stage('Deploy'){
       steps{
         script{
-          withCredentials([sshUserPrivateKey(credentialsId: "project04-key", keyFileVariable: 'my_private_key_file')]) {
+          withCredentials([sshUserPrivateKey(credentialsId: "AWSCredentials", keyFileVariable: 'my_private_key_file')]) {
             def remote = [:]
-            remote.name = "project04-key"
+            remote.name = "AWSCredentials"
             remote.host = "${env.DEV_BACK_IP}"
             remote.user = "ubuntu"
             remote.allowAnyHosts = true
