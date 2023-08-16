@@ -65,7 +65,7 @@ pipeline {
           sh "ssh -p 22 root@10.4.3.83 -T sh < /var/lib/jenkins/deploy.sh"
         }
       }
-
+    }
     
   
   }
