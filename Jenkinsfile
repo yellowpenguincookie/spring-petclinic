@@ -58,7 +58,6 @@ pipeline {
       }
     }
     
-    #update 된 도커 이미지 태그를 깃헙에 push
     stage('CodeDeploy'){
       #사전 준비
       sh("""
@@ -67,13 +66,10 @@ pipeline {
         git checkout -B master
       """)
 
-      #전역변수에 값 넣기 
-      #previousTAG 변수에 이전 빌드 번호를 넣음 
       script{
         previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
       }
 
-      # previousTAG 를 최신 빌드 번호로 바꿔서 push
       withCredentials([usernamePassword(credentialsId: 'github-signin', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
         sh("""
         #!/usr/bin/env bash
