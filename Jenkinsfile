@@ -57,31 +57,60 @@ pipeline {
         }
       }
     }
-    
-    stage('CodeDeploy'){
+
+    stage('CodeDeploy') {
+      when {
+          expression {
+              return env.dockerizingResult ==~ /(?i)(Y|YES|T|TRUE|ON|RUN)/
+          }
+      }
       steps {
-        sh("""
-          git config --global user.name "yellowpenguincookie"
-          git config --global user.email "yurijjjung@gmail.com"
-          git checkout -B master
-        """)
-  
-        script{
-          previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
-        }
-          sh("""
-          #!/usr/bin/env bash
-          git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
-          echo ${previrousTAG}
-          
-          git add eks/deployment.yaml
-          git status
-          git commit -m "update the image tag"
-          git push origin HEAD:master
-        """)
+          script {
+              try {
+                  // appspec.yaml 생성 및 s3에 업로드
+                  createAppspecAndUpload()
+                  
+                  def cmd = """
+                    aws deploy create-deployment \
+                    --application-name ${JOB_NAME} \
+                    --deployment-config-name CodeDeployDefault.ECSAllAtOnce \
+                    --deployment-group-name ${DEPLOYMENT_GROUP} \
+                    --s3-location bucket=${S3_BUCKET},key=${JOB_NAME}/${DEPLOYMENT_GROUP}/appspec.yaml,bundleType=YAML | jq '.deploymentId' -r
+                  """
+      
+                  def deploymentId = withAWS(credentials:"project04-key", region: 'ap-northeast-2') {
+                      return executeAwsCliByReturn(cmd)
+                  }
+                  
+      
+                  cmd = "aws deploy get-deployment --deployment-id ${deploymentId} | jq '.deploymentInfo.status' -r"
+                  def result = ""
+                  timeout(unit: 'SECONDS', time: 600) {
+                      while ("${result}" != "Succeeded") {
+                          if ("${result}" == "Failed") {
+                              exit 1
+                          }
+                          result = withAWS(credentials:"project04-key", region: 'ap-northeast-2') {
+                              return executeAwsCliByReturn(cmd)
+                          }
+                          print("${result}")
+                          sleep(15)
+                      }
+                  }
+      
+              } catch(Exception e) {
+                  print(e)
+                  cleanWs()
+                  currentBuild.result = 'FAILURE'
+              } finally {
+                  cleanWs()
+              }
+          }
       }
     }
 
+
+    
   
   }
 }
