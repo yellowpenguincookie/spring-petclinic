@@ -58,33 +58,13 @@ pipeline {
       }
     }
 
-    stage('Deploy'){
-      steps{
-        sshPublisher(
-	        publishers: 
-	        [
-	          sshPublisherDesc(
-          		configName: 'ssh',
-          		transfers: [sshTransfer(
-          		cleanRemote: false, 		
-          		excludes: '', 
-          		execCommand: 'sh /deploy/tesh.sh', 
-          		execTimeout: 120000, flatten: false, 
-          		makeEmptyDirs: false, 
-          		noDefaultExcludes: false, 
-          		patternSeparator: '[, ]+', 
-          		remoteDirectory: '/', 
-          		remoteDirectorySDF: false, 
-          		removePrefix: 'build/libs', 
-          		sourceFiles: 'build/libs/*.jar'
-          	  )], 
-          		usePromotionTimestamp: false, 
-          		useWorkspaceInPromotion: false, verbose: false
-	          )
-	        ]
-	      )
-      }
-    }
+          
+     stage('Deploy') {
+        steps {
+          echo "Deployed successfully!";
+          sh './deploy.sh'
+       }
+     }
 
     
   }
