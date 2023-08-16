@@ -58,14 +58,17 @@ pipeline {
       }
     }
 
-    stage("Deploy") {
-            steps {
-                script {
-                    sh 'sudo chmod +x ./script/deploy.sh'
-                    sh 'sudo ./script/deploy.sh'
-                }
+
+     stage('Deploy') {
+        steps {
+              // sshagent plugin required when using jenkins credentials
+             sshagent(credentials : ['credential id']) {
+                   sh 'ssh -v id@host'
+                   sh 'ssh id@host mkdir -p /home/ubuntu/deploy/ubuntu-work'
+                   sh 'scp -r ./public id@host:/home/ubuntu/deploy/ubuntu-work'
             }
-        }
+         }
+      }
 
     
   
