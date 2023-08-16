@@ -59,29 +59,32 @@ pipeline {
     }
     
     stage('CodeDeploy'){
-      sh("""
-        git config --global user.name "yellowpenguincookie"
-        git config --global user.email "yurijjjung@gmail.com"
-        git checkout -B master
-      """)
-
-      script{
-        previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
-      }
-
-      withCredentials([usernamePassword(credentialsId: 'github-signin', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+      steps {
         sh("""
-        #!/usr/bin/env bash
-        git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
-        echo ${previrousTAG}
-        
-        git add eks/deployment.yaml
-        git status
-        git commit -m "update the image tag"
-        git push origin HEAD:master
-      """)
+          git config --global user.name "yellowpenguincookie"
+          git config --global user.email "yurijjjung@gmail.com"
+          git checkout -B master
+        """)
+  
+        script{
+          previousTAG = sh(script: 'echo `expr ${BUILD_NUMBER} - 1`', returnStdout: true).trim()
+        }
+  
+        withCredentials([usernamePassword(credentialsId: 'github-signin', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+          sh("""
+          #!/usr/bin/env bash
+          git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
+          echo ${previrousTAG}
+          
+          git add eks/deployment.yaml
+          git status
+          git commit -m "update the image tag"
+          git push origin HEAD:master
+        """)
+        }
       }
     }
-    
+
+  
   }
 }
