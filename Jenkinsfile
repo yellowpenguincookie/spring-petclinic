@@ -15,7 +15,7 @@ pipeline {
     APP_NAME = 'project04-production-in-place'
     PROJECT_NAME = 'project04-production-in-place'
     BUCKET = 'project04-terraform-state'
-    ZIP_NAME = ${PROJECT_NAME}-${GIT_COMMIT}-${BUILD_TAG}.zip    
+    ZIP_NAME = ${PROJECT_NAME}+${GIT_COMMIT}+${BUILD_TAG}.zip    
     AUTOSCALING_GROUP = 'project04-target-group'
   }
   
