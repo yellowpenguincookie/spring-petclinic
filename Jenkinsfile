@@ -64,7 +64,7 @@ pipeline {
         script {
           // AWS CLI를 사용하여 CodeDeploy에 배포 생성
           sh "aws deploy create-deployment " +
-             "--application-name project04-production-in_place " +
+             "--application-name project04-production-in-place " +
              "--s3-location bucket=project04-terraform-state,bundleType=zip,key=deploy-1.0.zip " +
              "--deployment-group-name project04-production-in_place " +
              "--deployment-config-name CodeDeployDefault.OneAtATime " +
