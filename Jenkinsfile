@@ -68,11 +68,11 @@ pipeline {
         script {
           // AWS CLI를 사용하여 CodeDeploy에 배포 생성
           sh "aws deploy create-deployment " +
-             "--application-name ${APP_NAME} " +
-             "--s3-location bucket=${BUCKET},bundleType=zip,key=deploy-1.0.zip " +
-             "--deployment-group-name ${PROJECT_NAME} " +
+             "--application-name "project04-production-in-place" " +
+             "--s3-location bucket="project04-terraform-state",bundleType=zip,key=deploy-1.0.zip " +
+             "--deployment-group-name "project04-production-in-place" " +
              "--deployment-config-name CodeDeployDefault.OneAtATime " +
-             "--target-instances autoScalingGroups=${AUTOSCALING_GROUP}"
+             "--target-instances autoScalingGroups="project04-target-group""
          }
        }
      }
