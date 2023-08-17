@@ -70,7 +70,7 @@ pipeline {
           // AWS CLI를 사용하여 CodeDeploy에 배포 생성
           sh "aws deploy create-deployment " +
              "--application-name ${APP_NAME} " +
-             "--s3-location bucket=${BUCKET},bundleType=zip,key=${ZIP_NAME} " +
+             "--s3-location bucket=${BUCKET},bundleType=zip,key=deploy-1.0.zip " +
              "--deployment-group-name ${PROJECT_NAME} " +
              "--deployment-config-name CodeDeployDefault.OneAtATime " +
              "--target-instances autoScalingGroups=${AUTOSCALING_GROUP}"
