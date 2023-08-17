@@ -61,8 +61,32 @@ pipeline {
           
      stage('Deploy') {
         steps {
-          echo "Deployed successfully!";
-          sh './deploy.sh'
+          sshPublisher(
+              publishers: 
+              [
+                sshPublisherDesc(
+                  configName: 'project04-target', 
+                  transfers: 
+                    [
+                      sshTransfer(
+                        cleanRemote: false, 
+                        excludes: '', 
+                        execCommand: 'sh /home/ubuntu/deploy.sh', 
+                        execTimeout: 120000, 
+                        flatten: false, 
+                        makeEmptyDirs: false, 
+                        noDefaultExcludes: false, 
+                        patternSeparator: '[, ]+', 
+                        remoteDirectory: '/deploy3', 
+                        remoteDirectorySDF: false, 
+                        removePrefix: 'build/libs', 
+                        sourceFiles: 'build/libs/*.jar')], 
+                        usePromotionTimestamp: false, 
+                        useWorkspaceInPromotion: false, 
+                        verbose: false
+                        )
+                      ]
+              )
        }
      }
 
