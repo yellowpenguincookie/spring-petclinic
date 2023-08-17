@@ -12,6 +12,11 @@ pipeline {
     ECR_REPOSITORY = "257307634175.dkr.ecr.ap-northeast-2.amazonaws.com"
     ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
     ECR_DOCKER_TAG = "${DOCKER_TAG}" 
+    APP_NAME = 'project04-production-in-place'
+    PROJECT_NAME = 'project04-production-in-place'
+    BUCKET = 'project04-terraform-state'
+    ZIP_NAME = ${PROJECT_NAME}-${GIT_COMMIT}-${BUILD_TAG}.zip    
+    AUTOSCALING_GROUP = 'project04-target-group'
   }
   
   stages {
@@ -64,11 +69,11 @@ pipeline {
         script {
           // AWS CLI를 사용하여 CodeDeploy에 배포 생성
           sh "aws deploy create-deployment " +
-             "--application-name project04-production-in-place " +
-             "--s3-location bucket=project04-terraform-state,bundleType=zip,key=deploy-1.0.zip " +
-             "--deployment-group-name project04-production-in_place " +
+             "--application-name ${APP_NAME} " +
+             "--s3-location bucket=${BUCKET},bundleType=zip,key=${ZIP_NAME} " +
+             "--deployment-group-name ${PROJECT_NAME} " +
              "--deployment-config-name CodeDeployDefault.OneAtATime " +
-             "--target-instances autoScalingGroups=project04-target-group"
+             "--target-instances autoScalingGroups=${AUTOSCALING_GROUP}"
          }
        }
      }
