@@ -65,7 +65,7 @@ pipeline {
       steps {
         script {
           // AWS CLI를 사용하여 CodeDeploy에 배포 생성
-          sh 'aws deploy create-deployment ' +
+          sh 'aws [deploy] create-deployment ' +
              '--application-name project04-production-in-place' +
              '--s3-location bucket=project04-terraform-state,bundleType=zip,key=deploy-1.0' +
              '--deployment-group-name project04-production-in-place' +
