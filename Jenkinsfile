@@ -65,7 +65,7 @@ pipeline {
               publishers: 
               [
                 sshPublisherDesc(
-                  configName: 'project04-target', 
+                  configName: 'target', 
                   transfers: 
                     [
                       sshTransfer(
@@ -77,7 +77,7 @@ pipeline {
                         makeEmptyDirs: false, 
                         noDefaultExcludes: false, 
                         patternSeparator: '[, ]+', 
-                        remoteDirectory: '/deploy3', 
+                        remoteDirectory: '/deploy', 
                         remoteDirectorySDF: false, 
                         removePrefix: 'build/libs', 
                         sourceFiles: 'build/libs/*.jar')], 
