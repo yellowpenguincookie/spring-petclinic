@@ -14,8 +14,7 @@ pipeline {
     ECR_DOCKER_TAG = "${DOCKER_TAG}" 
     APP_NAME = 'project04-production-in-place'
     PROJECT_NAME = 'project04-production-in-place'
-    BUCKET = 'project04-terraform-state'
-    ZIP_NAME = ${PROJECT_NAME}+${GIT_COMMIT}+${BUILD_TAG}.zip    
+    BUCKET = 'project04-terraform-state' 
     AUTOSCALING_GROUP = 'project04-target-group'
   }
   
