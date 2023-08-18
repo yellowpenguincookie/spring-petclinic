@@ -64,7 +64,7 @@ pipeline {
         }
       }
     }    
-        stage('Codedeploy group') {
+    stage('Codedeploy group') {
       steps {
         script {
           sh "aws deploy create-deployment-group" + 
@@ -84,8 +84,7 @@ pipeline {
              "--deployment-group-name project04-production-in-place" +
              "--deployment-config-name CodeDeployDefault.OneAtATime" +
              "--target-instances autoScalingGroups=<project04-target-group>"
-          
-         }
+          }
        }
      }
 
