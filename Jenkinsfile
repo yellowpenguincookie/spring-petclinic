@@ -70,7 +70,7 @@ pipeline {
           sh "aws deploy create-deployment-group" + 
              "--application-name project04-production-in-place" +
              "--auto-scaling-groups project04-target-group" +
-             "--deployment-group-name project04-production-in-place" +
+             "--deployment-group-name project04-example" +
              "--service-role-arn arn:aws:iam::257307634175:role/project04-code-deploy-service-role"
         }
       }
@@ -81,7 +81,7 @@ pipeline {
           sh "aws deploy create-deployment" +
              "--application-name project04-production-in-place" +
              "--s3-location bucket=<project04-terraform-state>,bundleType=zip,key=deploy-1.0" +
-             "--deployment-group-name project04-production-in-place" +
+             "--deployment-group-name project04-example" +
              "--deployment-config-name CodeDeployDefault.OneAtATime" +
              "--target-instances autoScalingGroups=<project04-target-group>"
           }
