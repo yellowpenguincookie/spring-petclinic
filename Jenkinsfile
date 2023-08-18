@@ -61,12 +61,19 @@ pipeline {
       steps {
         script {
           // AWS CLI를 사용하여 CodeDeploy에 배포 생성
+          sh "aws deploy create-application --application-name project04-production-in-place --compute-platform Server"
+          sh "aws deploy create-deployment-group" + 
+             "--application-name project04-production-in-place" +
+             "--auto-scaling-groups project04-target-group" +
+             "--deployment-group-name project04-production-in-place" +
+             "--service-role-arn arn:aws:iam::257307634175:role/project04-code-deploy-service-role"
           sh "aws deploy create-deployment" +
-             "--application-name <project04-production-in-place>" +
+             "--application-name project04-production-in-place" +
              "--s3-location bucket=<project04-terraform-state>,bundleType=zip,key=deploy-1.0" +
-             "--deployment-group-name <project04-production-in-place>" +
+             "--deployment-group-name project04-production-in-place" +
              "--deployment-config-name CodeDeployDefault.OneAtATime" +
              "--target-instances autoScalingGroups=<project04-target-group>"
+          
          }
        }
      }
