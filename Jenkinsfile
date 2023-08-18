@@ -60,7 +60,9 @@ pipeline {
     stage('Codedeploy') {
       steps {
         script {
-          sh "aws deploy create-application --application-name project04-production-in-place --compute-platform Server"
+          sh "aws deploy create-application" +
+             "--application-name project04-production-in-place" +
+             "--compute-platform Server"
         }
       }
     }    
