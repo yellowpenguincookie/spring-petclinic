@@ -61,6 +61,12 @@ pipeline {
       steps {
         script {
           sh "aws deploy create-application --application-name project04-production-in-place --compute-platform Server"
+        }
+      }
+    }    
+        stage('Codedeploy group') {
+      steps {
+        script {
           sh "aws deploy create-deployment-group" + 
              "--application-name project04-production-in-place" +
              "--auto-scaling-groups project04-target-group" +
