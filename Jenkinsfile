@@ -72,7 +72,7 @@ pipeline {
           sh "aws deploy create-deployment-group " + 
              "--application-name project04-production-in-place " +
              "--auto-scaling-groups project04-target-group " +
-             "--deployment-group-name project04-example" +
+             "--deployment-group-name project04-example " +
              "--service-role-arn arn:aws:iam::257307634175:role/project04-code-deploy-service-role"
         }
       }
