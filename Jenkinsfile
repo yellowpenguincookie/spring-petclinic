@@ -57,26 +57,7 @@ pipeline {
         }
       }
     }
-    stage('Codedeploy') {
-      steps {
-        script {
-          sh "aws deploy create-application " +
-             "--application-name project04-production-in-place " +
-             "--compute-platform Server"
-        }
-      }
-    }    
-    stage('Codedeploy group') {
-      steps {
-        script {
-          sh "aws deploy create-deployment-group " + 
-             "--application-name project04-production-in-place " +
-             "--auto-scaling-groups project04-target-group " +
-             "--deployment-group-name project04-example " +
-             "--service-role-arn arn:aws:iam::257307634175:role/project04-code-deploy-service-role"
-        }
-      }
-    }    
+
     stage('Deploy to CodeDeploy') {
       steps {
         script {        
