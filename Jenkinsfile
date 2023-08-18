@@ -56,17 +56,22 @@ pipeline {
           sh 'rm -rf ./deploy-1.0.zip'
         }
       }
-    }          
-    stage('Deploy to CodeDeploy') {
+    }
+    stage('Codedeploy') {
       steps {
         script {
-          // AWS CLI를 사용하여 CodeDeploy에 배포 생성
           sh "aws deploy create-application --application-name project04-production-in-place --compute-platform Server"
           sh "aws deploy create-deployment-group" + 
              "--application-name project04-production-in-place" +
              "--auto-scaling-groups project04-target-group" +
              "--deployment-group-name project04-production-in-place" +
              "--service-role-arn arn:aws:iam::257307634175:role/project04-code-deploy-service-role"
+        }
+      }
+    }    
+    stage('Deploy to CodeDeploy') {
+      steps {
+        script {        
           sh "aws deploy create-deployment" +
              "--application-name project04-production-in-place" +
              "--s3-location bucket=<project04-terraform-state>,bundleType=zip,key=deploy-1.0" +
