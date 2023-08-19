@@ -87,15 +87,16 @@ pipeline {
     
     stage('Deploy to CodeDeploy') {
       steps {
-        createDeployment(s3Bucket: "${S3_BUCKET}", 
-                         s3Key: 'deploy-1.0.zip', 
-                         s3BundleType: 'zip', 
-                         applicationName: "${APPLICATION_NAME}",
-                         deploymentGroupName: "${DEPLOYMENT_GROUP_NAME}", 
-                         deploymentConfigName: "${DEPLOYMENT_CONFIG_NAME}",
-                         waitForCompletion: 'false')
-          }
-       }
+        script {
+          sh "aws deploy create-deployment " +
+             "--application-name "${APPLICATION_NAME}" +
+              "--s3-location bucket=project04-terraform-state,bundleType=zip,key=deploy-1.0 "  +
+             "--deployment-group-name "${DEPLOYMENT_GROUP_NAME}" +
+             "--deployment-config-name "${DEPLOYMENT_CONFIG_NAME}" +
+             "--target-instances autoScalingGroups="${AUTO_SCALING_GROUP_NAME}"
+        }
+      }
+    }
 
 
     
