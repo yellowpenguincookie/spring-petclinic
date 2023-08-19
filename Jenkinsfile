@@ -12,6 +12,12 @@ pipeline {
     ECR_REPOSITORY = "257307634175.dkr.ecr.ap-northeast-2.amazonaws.com"
     ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
     ECR_DOCKER_TAG = "${DOCKER_TAG}" 
+    APPLICATION_NAME = "project04-production-in-place"
+    DEPLOYMENT_GROUP_NAME = "project01-production-in-place"
+    AUTO_SCALING_GROUP_NAME = "project04-target-group"
+    SERVICE_ROLE_ARN = "arn:aws:iam::257307634175:role/project04-code-deploy-service-role"
+    DEPLOYMENT_CONFIG_NAME = "CodeDeployDefault.OneAtATime"
+    S3_BUCKET = "project04-terraform-state"
   }
   
   stages {
@@ -61,7 +67,8 @@ pipeline {
     stage('CodeDeploy Application') {
       steps {
         script {    
-          sh "aws deploy create-application --application-name project04-production-in-place --compute-platform Server"
+          sh 'aws deploy delete-application --application-name "${APPLICATION_NAME}"'
+          sh 'aws deploy create-application --application-name "${APPLICATION_NAME}" --compute-platform Server'
           }
        }
      }
@@ -69,28 +76,27 @@ pipeline {
     stage('CodeDeploy Deployment Group') {
       steps {
         script {    
-          sh "aws deploy create-deployment-group " + 
-             "--application-name project04-production-in-place " +
-             "--auto-scaling-groups project04-target-group " +
-             "--deployment-group-name project04-production-in-place " +
-             "--service-role-arn arn:aws:iam::257307634175:role/project04-code-deploy-service-role"
-
+          sh 'aws deploy create-deployment-group --application-name "${APPLICATION_NAME}" \
+          --deployment-group-name "${DEPLOYMENT_GROUP_NAME}" \
+          --auto-scaling-groups "${AUTO_SCALING_GROUP_NAME}" \
+          --service-role-arn "${SERVICE_ROLE_ARN}" \
+          --deployment-config-name "${DEPLOYMENT_CONFIG_NAME}"'
           }
        }
      }
     
     stage('Deploy to CodeDeploy') {
       steps {
-        script {    
-          sh "aws deploy create-deployment " +
-             "--application-name project04-production-in-place " +
-             "--s3-location bucket=project04-terraform-state,bundleType=zip,key=deploy-1.0 " +
-             "--deployment-group-name project04-production-in_place " +
-             "--deployment-config-name CodeDeployDefault.OneAtATime " +
-             "--target-instances autoScalingGroups=project04-target-group"
+        createDeployment(s3Bucket: "${S3_BUCKET}", 
+                         s3Key: 'deploy-1.0.zip', 
+                         s3BundleType: 'zip', 
+                         applicationName: "${APPLICATION_NAME}",
+                         deploymentGroupName: "${DEPLOYMENT_GROUP_NAME}", 
+                         deploymentConfigName: "${DEPLOYMENT_CONFIG_NAME}",
+                         waitForCompletion: 'false')
           }
        }
-     }
+
 
     
   }
