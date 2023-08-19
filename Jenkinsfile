@@ -63,7 +63,7 @@ pipeline {
         script {    
           sh "aws deploy create-deployment-group " + 
              "--application-name project04-production-in-place " +
-             "--auto-scaling-groups project04-target-grou p" +
+             "--auto-scaling-groups project04-target-group " +
              "--deployment-group-name project04-production-in_place " +
              "--service-role-arn arn:aws:iam::257307634175:user/project04"
           sh "aws deploy create-deployment " +
