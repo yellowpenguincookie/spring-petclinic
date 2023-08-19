@@ -88,7 +88,7 @@ pipeline {
     stage('Deploy to CodeDeploy') {
       steps {
         script {
-          sh '"aws deploy create-deployment " \
+          sh 'aws deploy create-deployment \
              --application-name "${APPLICATION_NAME}" \
              --s3-location bucket=project04-terraform-state,bundleType=zip,key=deploy-1.0 \
              --deployment-group-name "${DEPLOYMENT_GROUP_NAME}" \
