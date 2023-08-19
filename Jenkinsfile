@@ -13,7 +13,7 @@ pipeline {
     ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
     ECR_DOCKER_TAG = "${DOCKER_TAG}" 
     APPLICATION_NAME = "project04-production-in-place"
-    DEPLOYMENT_GROUP_NAME = "project01-production-in-place"
+    DEPLOYMENT_GROUP_NAME = "project04-production-in-place"
     AUTO_SCALING_GROUP_NAME = "project04-target-group"
     SERVICE_ROLE_ARN = "arn:aws:iam::257307634175:role/project04-code-deploy-service-role"
     DEPLOYMENT_CONFIG_NAME = "CodeDeployDefault.OneAtATime"
