@@ -61,6 +61,7 @@ pipeline {
     stage('Deploy to CodeDeploy') {
       steps {
         script {    
+          sh "aws deploy create-application --application-name project04-production-in-place --compute-platform Server"
           sh "aws deploy create-deployment " +
              "--application-name project04-production-in-place " +
              "--s3-location bucket=project04-terraform-state,bundleType=zip,key=deploy-1.0 " +
