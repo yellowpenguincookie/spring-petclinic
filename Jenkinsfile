@@ -63,10 +63,10 @@ pipeline {
         script {    
           sh "aws deploy create-deployment " +
              "--application-name project04-production-in-place " +
-             "--s3-location bucket=<project04-terraform-state>,bundleType=zip,key=deploy-1.0 " +
+             "--s3-location bucket=project04-terraform-state,bundleType=zip,key=deploy-1.0 " +
              "--deployment-group-name project04-example " +
              "--deployment-config-name CodeDeployDefault.OneAtATime " +
-             "--target-instances autoScalingGroups=<project04-target-group>"
+             "--target-instances autoScalingGroups=project04-target-group"
           }
        }
      }
